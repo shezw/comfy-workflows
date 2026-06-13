@@ -1,0 +1,1074 @@
+{
+  "id": "cfy-shezw-sd2-director-api",
+  "revision": 0,
+  "last_node_id": 20,
+  "last_link_id": 9,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -980,
+        -540
+      ],
+      "size": [
+        760,
+        520
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Usage",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "# Shezw Director + Seedance 2.0 API\n\n用途：把“导演台”提示词拆成场景、角色锁定、动作表演、镜头稳定、时间线，然后调用线上 Seedance 2.0 reference-to-video API 生成视频。\n\nAPI：当前节点接的是 fal.ai 的 bytedance/seedance-2.0/reference-to-video。它支持 @Image1-@Image9、@Audio1-@Audio3 引用。\n\n使用：\n1. 重启 ComfyUI，让 custom_nodes/shezw_seedance_api 生效。\n2. 推荐在启动 ComfyUI 前设置环境变量 FAL_KEY；也可以直接填 Seedance 2.0 fal Generate 节点的 api_key。\n3. MAIN IMAGE 必须换成你的主图。REF IMAGE 2-9 是可选参考图：需要时把对应 LoadImage 的 IMAGE 输出接到 Seedance 节点 image_2-image_9。\n4. MAIN AUDIO 默认接到 audio_1；不需要音频就断开这根线。\n5. 修改动作时间线 JSON，把动作拆到具体秒段；动作越明确，模型越容易执行。\n\n输出：节点会返回 video_url，并把 mp4 下载到 ComfyUI output 目录。\n\n注意：这不是本地 LTX 采样链路，也不是 LipDub 专用节点；这是线上 Seedance 2.0 音/图参考视频 API 工作流。"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        40
+      ],
+      "size": [
+        620,
+        170
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "title": "SCENE / MATERIALS",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "cinematic 3D animated interior, film-quality material rendering, visible fabric fibers on sweater, soft sofa material, detailed skin shading, warm practical lighting, shallow but readable depth of field"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        250
+      ],
+      "size": [
+        620,
+        200
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "CHARACTER / IDENTITY LOCK",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Use @Image1 as the main identity and composition reference. Preserve the same face, hairstyle, clothing, body shape, pose language, room layout, sofa, sweater material, and lighting style. Use @Image2-@Image9 only when connected as extra material/identity/style references."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        500
+      ],
+      "size": [
+        620,
+        220
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "ACTION / SPEAKING PERFORMANCE",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "The subject speaks naturally to camera with accurate mouth shapes aligned to @Audio1 when audio is connected. Keep lip motion visible, teeth and jaw movement plausible, no frozen mouth. Add natural breathing, slight shoulder movement, small head nods, and restrained hand gestures driven by speaking emphasis."
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        770
+      ],
+      "size": [
+        620,
+        160
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "CAMERA / STABILITY",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Stable locked medium shot, eye-level camera, no shake, no sudden zoom, no aggressive pan, no cuts. Keep hands visible only when natural and avoid covering the mouth."
+      ]
+    },
+    {
+      "id": 6,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        970
+      ],
+      "size": [
+        620,
+        300
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "title": "TIMELINE JSON",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "[\n  {\n    \"start\": 0,\n    \"end\": 1.5,\n    \"action\": \"begins speaking, mouth opens clearly on first words, eyes stay engaged, tiny nod\"\n  },\n  {\n    \"start\": 1.5,\n    \"end\": 3.5,\n    \"action\": \"continues speaking, right hand rises into a small open-palm gesture, sweater folds and sofa texture remain detailed\"\n  },\n  {\n    \"start\": 3.5,\n    \"end\": 5,\n    \"action\": \"finishes the sentence, hand settles down naturally, final subtle nod, expression remains warm\"\n  }\n]"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -980,
+        1320
+      ],
+      "size": [
+        620,
+        180
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "REFERENCE RULES",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Reference order: @Image1 is the primary frame/reference. @Image2-@Image9 are optional reference images. If @Audio1 is connected, the performance must follow the audio rhythm and speaking intensity. Keep identity, materials, lighting, and camera stable across the whole shot."
+      ]
+    },
+    {
+      "id": 8,
+      "type": "SD2_DirectorPrompt",
+      "pos": [
+        -260,
+        320
+      ],
+      "size": [
+        640,
+        520
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "scene_prompt",
+          "type": "STRING",
+          "link": 1,
+          "widget": {
+            "name": "scene_prompt"
+          }
+        },
+        {
+          "name": "character_prompt",
+          "type": "STRING",
+          "link": 2,
+          "widget": {
+            "name": "character_prompt"
+          }
+        },
+        {
+          "name": "action_prompt",
+          "type": "STRING",
+          "link": 3,
+          "widget": {
+            "name": "action_prompt"
+          }
+        },
+        {
+          "name": "camera_prompt",
+          "type": "STRING",
+          "link": 4,
+          "widget": {
+            "name": "camera_prompt"
+          }
+        },
+        {
+          "name": "timeline_json",
+          "type": "STRING",
+          "link": 5,
+          "widget": {
+            "name": "timeline_json"
+          }
+        },
+        {
+          "name": "reference_instruction",
+          "type": "STRING",
+          "link": 6,
+          "widget": {
+            "name": "reference_instruction"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "seedance_prompt",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "director_manifest",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "DIRECTOR PROMPT COMPILER",
+      "properties": {
+        "Node name for S&R": "SD2_DirectorPrompt",
+        "cnr_id": "shezw_seedance_api"
+      },
+      "widgets_values": [
+        "cinematic 3D animated interior, film-quality material rendering, visible fabric fibers on sweater, soft sofa material, detailed skin shading, warm practical lighting, shallow but readable depth of field",
+        "Use @Image1 as the main identity and composition reference. Preserve the same face, hairstyle, clothing, body shape, pose language, room layout, sofa, sweater material, and lighting style. Use @Image2-@Image9 only when connected as extra material/identity/style references.",
+        "The subject speaks naturally to camera with accurate mouth shapes aligned to @Audio1 when audio is connected. Keep lip motion visible, teeth and jaw movement plausible, no frozen mouth. Add natural breathing, slight shoulder movement, small head nods, and restrained hand gestures driven by speaking emphasis.",
+        "Stable locked medium shot, eye-level camera, no shake, no sudden zoom, no aggressive pan, no cuts. Keep hands visible only when natural and avoid covering the mouth.",
+        "[\n  {\n    \"start\": 0,\n    \"end\": 1.5,\n    \"action\": \"begins speaking, mouth opens clearly on first words, eyes stay engaged, tiny nod\"\n  },\n  {\n    \"start\": 1.5,\n    \"end\": 3.5,\n    \"action\": \"continues speaking, right hand rises into a small open-palm gesture, sweater folds and sofa texture remain detailed\"\n  },\n  {\n    \"start\": 3.5,\n    \"end\": 5,\n    \"action\": \"finishes the sentence, hand settles down naturally, final subtle nod, expression remains warm\"\n  }\n]",
+        "Reference order: @Image1 is the primary frame/reference. @Image2-@Image9 are optional reference images. If @Audio1 is connected, the performance must follow the audio rhythm and speaking intensity. Keep identity, materials, lighting, and camera stable across the whole shot."
+      ]
+    },
+    {
+      "id": 9,
+      "type": "LoadImage",
+      "pos": [
+        520,
+        -520
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "MAIN IMAGE / @Image1",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "main_image.png",
+        "image"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "LoadImage",
+      "pos": [
+        920,
+        -520
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 2 / @Image2",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_2.png",
+        "image"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        1320,
+        -520
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 3 / @Image3",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_3.png",
+        "image"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "LoadImage",
+      "pos": [
+        1720,
+        -520
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 4 / @Image4",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_4.png",
+        "image"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "LoadImage",
+      "pos": [
+        2120,
+        -520
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 5 / @Image5",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_5.png",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        920,
+        -120
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 6 / @Image6",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_6.png",
+        "image"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "LoadImage",
+      "pos": [
+        1320,
+        -120
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 7 / @Image7",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_7.png",
+        "image"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "LoadImage",
+      "pos": [
+        1720,
+        -120
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 8 / @Image8",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_8.png",
+        "image"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "LoadImage",
+      "pos": [
+        2120,
+        -120
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL REF IMAGE 9 / @Image9",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "ref_9.png",
+        "image"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "LoadAudio",
+      "pos": [
+        520,
+        -110
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "title": "MAIN AUDIO / @Audio1",
+      "properties": {
+        "Node name for S&R": "LoadAudio",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "input_audio.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 19,
+      "type": "LoadAudio",
+      "pos": [
+        520,
+        90
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": null
+        }
+      ],
+      "title": "OPTIONAL AUDIO 2 / @Audio2",
+      "properties": {
+        "Node name for S&R": "LoadAudio",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "optional_audio_2.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 20,
+      "type": "Seedance2FalGenerate",
+      "pos": [
+        520,
+        320
+      ],
+      "size": [
+        700,
+        700
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 7,
+          "widget": {
+            "name": "prompt"
+          }
+        },
+        {
+          "name": "api_key",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "api_key"
+          }
+        },
+        {
+          "name": "endpoint",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "endpoint"
+          }
+        },
+        {
+          "name": "resolution",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "resolution"
+          }
+        },
+        {
+          "name": "duration",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "duration"
+          }
+        },
+        {
+          "name": "aspect_ratio",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "aspect_ratio"
+          }
+        },
+        {
+          "name": "generate_audio",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "generate_audio"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "wait_for_result",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "wait_for_result"
+          }
+        },
+        {
+          "name": "poll_interval_seconds",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "poll_interval_seconds"
+          }
+        },
+        {
+          "name": "timeout_seconds",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "timeout_seconds"
+          }
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        },
+        {
+          "name": "image_1",
+          "type": "IMAGE",
+          "link": 8
+        },
+        {
+          "name": "image_2",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_4",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_5",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_6",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_7",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_8",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_9",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "audio_1",
+          "type": "AUDIO",
+          "link": 9
+        },
+        {
+          "name": "audio_2",
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "audio_3",
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "extra_json",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "extra_json"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_url",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "local_video_path",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "request_id",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "response_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "SEEDANCE 2.0 API GENERATE",
+      "properties": {
+        "Node name for S&R": "Seedance2FalGenerate",
+        "cnr_id": "shezw_seedance_api"
+      },
+      "widgets_values": [
+        "",
+        "bytedance/seedance-2.0/reference-to-video",
+        "1080p",
+        "5",
+        "16:9",
+        true,
+        -1,
+        true,
+        3,
+        900,
+        "sd2_director_pro",
+        "{}"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      8,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      3,
+      0,
+      8,
+      1,
+      "STRING"
+    ],
+    [
+      3,
+      4,
+      0,
+      8,
+      2,
+      "STRING"
+    ],
+    [
+      4,
+      5,
+      0,
+      8,
+      3,
+      "STRING"
+    ],
+    [
+      5,
+      6,
+      0,
+      8,
+      4,
+      "STRING"
+    ],
+    [
+      6,
+      7,
+      0,
+      8,
+      5,
+      "STRING"
+    ],
+    [
+      7,
+      8,
+      0,
+      20,
+      0,
+      "STRING"
+    ],
+    [
+      8,
+      9,
+      0,
+      20,
+      12,
+      "IMAGE"
+    ],
+    [
+      9,
+      18,
+      0,
+      20,
+      21,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Director Prompt Inputs",
+      "bounding": [
+        -1020,
+        0,
+        710,
+        1540
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "locked": false
+    },
+    {
+      "id": 2,
+      "title": "References",
+      "bounding": [
+        480,
+        -580,
+        2040,
+        520
+      ],
+      "color": "#567d46",
+      "font_size": 24,
+      "locked": false
+    },
+    {
+      "id": 3,
+      "title": "Online API Submit",
+      "bounding": [
+        480,
+        260,
+        780,
+        820
+      ],
+      "color": "#8a6d3b",
+      "font_size": 24,
+      "locked": false
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [
+        1020,
+        480
+      ]
+    }
+  },
+  "version": 0.4
+}
