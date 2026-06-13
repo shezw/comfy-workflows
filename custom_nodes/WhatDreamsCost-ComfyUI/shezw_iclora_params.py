@@ -137,6 +137,8 @@ class ShezwDirectorICLoRAGuide(io.ComfyNode):
                 io.Boolean.Input("use_tiled_encode", default=False),
                 io.Int.Input("tile_size", default=256, min=64, max=512, step=32),
                 io.Int.Input("tile_overlap", default=64, min=16, max=256, step=16),
+                io.Float.Input("reference_strength", default=0.35, min=0.0, max=1.0, step=0.01),
+                io.Int.Input("max_references", default=8, min=0, max=8, step=1),
             ],
             outputs=[
                 io.Conditioning.Output("positive"),
@@ -175,79 +177,112 @@ class ShezwDirectorICLoRAGuide(io.ComfyNode):
     @classmethod
     def execute(cls, positive, negative, vae, latent, guide_data, control_image=None,
                 latent_downscale_factor=1.0, default_strength=0.0, crop="disabled",
-                use_tiled_encode=False, tile_size=256, tile_overlap=64) -> io.NodeOutput:
-        frame_idx, strength, _control_type = _primary_control(guide_data, 0, default_strength)
-        if control_image is None or strength <= 0:
-            return io.NodeOutput(positive, negative, latent)
-
+                use_tiled_encode=False, tile_size=256, tile_overlap=64,
+                reference_strength=0.35, max_references=8) -> io.NodeOutput:
         scale_factors = vae.downscale_index_formula
         latent_image = latent["samples"]
         noise_mask = nodes_lt.get_noise_mask(latent)
         _, _, latent_length, latent_height, latent_width = latent_image.shape
 
-        time_scale_factor = scale_factors[0]
-        num_frames_to_keep = ((control_image.shape[0] - 1) // time_scale_factor) * time_scale_factor + 1
-        causal_fix = frame_idx == 0 or num_frames_to_keep == 1
-        if not causal_fix:
-            control_image = torch.cat([control_image[:1], control_image], dim=0)
+        def apply_image_guide(cur_positive, cur_negative, cur_latent_image, cur_noise_mask, image, frame_idx, strength, label):
+            time_scale_factor = scale_factors[0]
+            num_frames_to_keep = ((image.shape[0] - 1) // time_scale_factor) * time_scale_factor + 1
+            causal_fix = frame_idx == 0 or num_frames_to_keep == 1
+            if not causal_fix:
+                image = torch.cat([image[:1], image], dim=0)
 
-        control_image, guide_latent = cls._encode(
-            vae,
-            latent_width,
-            latent_height,
-            control_image,
-            scale_factors,
-            latent_downscale_factor,
-            crop,
-            use_tiled_encode,
-            tile_size,
-            tile_overlap,
-        )
-
-        if not causal_fix:
-            guide_latent = guide_latent[:, :, 1:, :, :]
-            control_image = control_image[1:]
-
-        guide_orig_shape = list(guide_latent.shape[2:])
-        guide_mask = None
-
-        if latent_downscale_factor > 1:
-            if latent_width % latent_downscale_factor != 0 or latent_height % latent_downscale_factor != 0:
-                raise ValueError(
-                    f"Latent spatial size {latent_width}x{latent_height} must be divisible by "
-                    f"latent_downscale_factor {latent_downscale_factor}"
-                )
-            dilated = _dilate_latent(
-                {"samples": guide_latent},
-                horizontal_scale=int(latent_downscale_factor),
-                vertical_scale=int(latent_downscale_factor),
+            image, guide_latent = cls._encode(
+                vae,
+                latent_width,
+                latent_height,
+                image,
+                scale_factors,
+                latent_downscale_factor,
+                crop,
+                use_tiled_encode,
+                tile_size,
+                tile_overlap,
             )
-            guide_mask = dilated["noise_mask"]
-            guide_latent = dilated["samples"]
 
-        iclora_tokens_added = guide_latent.shape[2] * guide_latent.shape[3] * guide_latent.shape[4]
-        frame_idx, latent_idx = nodes_lt.LTXVAddGuide.get_latent_index(
-            positive, latent_length, len(control_image), frame_idx, scale_factors
-        )
-        assert latent_idx + guide_latent.shape[2] <= latent_length, (
-            "IC-LoRA control frames exceed the length of the latent sequence."
-        )
+            if not causal_fix:
+                guide_latent = guide_latent[:, :, 1:, :, :]
+                image = image[1:]
 
-        positive, negative, latent_image, noise_mask = nodes_lt.LTXVAddGuide.append_keyframe(
-            positive,
-            negative,
-            frame_idx,
-            latent_image,
-            noise_mask,
-            guide_latent,
-            strength,
-            scale_factors,
-            guide_mask=guide_mask,
-            latent_downscale_factor=latent_downscale_factor,
-            causal_fix=causal_fix,
-        )
+            guide_orig_shape = list(guide_latent.shape[2:])
+            guide_mask = None
 
-        positive = _append_guide_attention_entry(positive, iclora_tokens_added, guide_orig_shape)
-        negative = _append_guide_attention_entry(negative, iclora_tokens_added, guide_orig_shape)
-        log.info("[ShezwDirectorICLoRAGuide] Applied IC-LoRA guide at frame %s strength %.3f", frame_idx, strength)
+            if latent_downscale_factor > 1:
+                if latent_width % latent_downscale_factor != 0 or latent_height % latent_downscale_factor != 0:
+                    raise ValueError(
+                        f"Latent spatial size {latent_width}x{latent_height} must be divisible by "
+                        f"latent_downscale_factor {latent_downscale_factor}"
+                    )
+                dilated = _dilate_latent(
+                    {"samples": guide_latent},
+                    horizontal_scale=int(latent_downscale_factor),
+                    vertical_scale=int(latent_downscale_factor),
+                )
+                guide_mask = dilated["noise_mask"]
+                guide_latent = dilated["samples"]
+
+            iclora_tokens_added = guide_latent.shape[2] * guide_latent.shape[3] * guide_latent.shape[4]
+            resolved_frame_idx, latent_idx = nodes_lt.LTXVAddGuide.get_latent_index(
+                cur_positive, latent_length, len(image), frame_idx, scale_factors
+            )
+            assert latent_idx + guide_latent.shape[2] <= latent_length, (
+                f"IC-LoRA {label} frames exceed the length of the latent sequence."
+            )
+
+            cur_positive, cur_negative, cur_latent_image, cur_noise_mask = nodes_lt.LTXVAddGuide.append_keyframe(
+                cur_positive,
+                cur_negative,
+                resolved_frame_idx,
+                cur_latent_image,
+                cur_noise_mask,
+                guide_latent,
+                strength,
+                scale_factors,
+                guide_mask=guide_mask,
+                latent_downscale_factor=latent_downscale_factor,
+                causal_fix=causal_fix,
+            )
+
+            cur_positive = _append_guide_attention_entry(cur_positive, iclora_tokens_added, guide_orig_shape)
+            cur_negative = _append_guide_attention_entry(cur_negative, iclora_tokens_added, guide_orig_shape)
+            log.info("[ShezwDirectorICLoRAGuide] Applied %s at frame %s strength %.3f", label, resolved_frame_idx, strength)
+            return cur_positive, cur_negative, cur_latent_image, cur_noise_mask
+
+        references = []
+        if isinstance(guide_data, dict):
+            references = guide_data.get("references", []) or []
+
+        if reference_strength > 0 and max_references > 0:
+            for idx, ref in enumerate(references[:max_references]):
+                image = ref.get("image") if isinstance(ref, dict) else None
+                if image is None:
+                    continue
+                positive, negative, latent_image, noise_mask = apply_image_guide(
+                    positive,
+                    negative,
+                    latent_image,
+                    noise_mask,
+                    image,
+                    0,
+                    reference_strength,
+                    f"reference {ref.get('name', idx + 1)}",
+                )
+
+        frame_idx, strength, _control_type = _primary_control(guide_data, 0, default_strength)
+        if control_image is not None and strength > 0:
+            positive, negative, latent_image, noise_mask = apply_image_guide(
+                positive,
+                negative,
+                latent_image,
+                noise_mask,
+                control_image,
+                frame_idx,
+                strength,
+                "control guide",
+            )
+
         return io.NodeOutput(positive, negative, {"samples": latent_image, "noise_mask": noise_mask})

@@ -531,7 +531,7 @@
       "title": "Shezw Director-Pro Notes",
       "properties": {},
       "widgets_values": [
-        "# Shezw Director-Pro: real LTX Director / Prompt Relay workflow\n\nThis workflow is based on WhatDreamsCost-ComfyUI LTX Director.\n\nThe important part is the LTXDirector node:\n- `global_prompt` holds persistent scene, identity, style, and material rules.\n- `timeline_data` stores visual timeline blocks.\n- `local_prompts` stores one action prompt per time segment.\n- `segment_lengths` stores pixel-frame duration per action segment.\n\nLTXDirector does not simply concatenate text. It tokenizes global + local prompts, maps token ranges, then patches LTX cross-attention with Prompt Relay temporal masks. That is the mechanism that makes action descriptions reach the model at the correct time.\n\nEdit action in timeline blocks or in local prompts. Keep each local prompt action-focused: expression, mouth movement, hand gesture, body pose, camera. Avoid stuffing scene/style into every action block.\n\nIC-Control is now wired to a real IC-LoRA path: load a control/depth/motion video in the outer IC CONTROL VIDEO / IMAGE INPUT node. The Director IC-Control track start and strength are read by ShezwDirectorICLoRAGuide inside both sampling stages. Required LoRA: ltxv/ltx2/ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors."
+        "# Shezw Director-Pro: real LTX Director / Prompt Relay workflow\n\nThis workflow is based on WhatDreamsCost-ComfyUI LTX Director.\n\nThe important part is the LTXDirector node:\n- `global_prompt` holds persistent scene, identity, style, and material rules.\n- `timeline_data` stores visual timeline blocks.\n- `local_prompts` stores one action prompt per time segment.\n- `segment_lengths` stores pixel-frame duration per action segment.\n\nLTXDirector does not simply concatenate text. It tokenizes global + local prompts, maps token ranges, then patches LTX cross-attention with Prompt Relay temporal masks. That is the mechanism that makes action descriptions reach the model at the correct time.\n\nEdit action in timeline blocks or in local prompts. Keep each local prompt action-focused: expression, mouth movement, hand gesture, body pose, camera. Avoid stuffing scene/style into every action block.\n\nIC-Control is now wired to a real IC-LoRA path: load a control/depth/motion video in the outer IC CONTROL VIDEO / IMAGE INPUT node. The Director IC-Control track start and strength are read by ShezwDirectorICLoRAGuide inside both sampling stages. Required LoRA: ltxv/ltx2/ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors.\n\nReference channel is now actively consumed: Add Reference images are loaded into guide_data.references and ShezwDirectorICLoRAGuide applies up to 8 references as low-strength IC-LoRA visual reference guides before applying the control video guide."
       ],
       "color": "#322",
       "bgcolor": "#533"
@@ -2371,9 +2371,11 @@
               "disabled",
               false,
               256,
-              64
+              64,
+              0.35,
+              8
             ],
-            "title": "Apply Director IC-Control Track"
+            "title": "Apply Director Reference + IC-Control"
           }
         ],
         "groups": [],
@@ -3590,9 +3592,11 @@
               "disabled",
               false,
               256,
-              64
+              64,
+              0.35,
+              8
             ],
-            "title": "Apply Director IC-Control Track"
+            "title": "Apply Director Reference + IC-Control"
           }
         ],
         "groups": [],
