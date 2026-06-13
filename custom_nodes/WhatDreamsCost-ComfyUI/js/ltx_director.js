@@ -242,13 +242,17 @@ const STYLES = `
   }
   .pr-strength-input {
     font-size: 12px;
+    font-weight: 700;
     color: #fff;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 4px;
-    width: 52px;
-    text-align: center;
-    padding: 3px;
+    background: linear-gradient(90deg, #d7a94f 0%, #d7a94f 100%, #222 100%, #222 100%);
+    border: 1px solid #6f5624;
+    border-radius: 5px;
+    width: 180px;
+    height: 24px;
+    text-align: right;
+    padding: 0 10px;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
   }
   .pr-strength-input::-webkit-outer-spin-button,
   .pr-strength-input::-webkit-inner-spin-button {
@@ -259,8 +263,9 @@ const STYLES = `
     -moz-appearance: textfield;
   }
   .pr-strength-input:disabled {
-    opacity: 0.35;
+    opacity: 0.38;
     cursor: not-allowed;
+    border-color: #444;
   }
   .pr-gap-menu {
     position: fixed;
@@ -1475,6 +1480,7 @@ class TimelineEditor {
           if (newVal > 1) newVal = 1;
 
           this.strengthValue.value = newVal.toFixed(2);
+          this.updateStrengthVisual();
 
           if (this.selectionType === "image" && this.timeline.segments[this.selectedIndex]) {
             const seg = this.timeline.segments[this.selectedIndex];
@@ -1506,6 +1512,7 @@ class TimelineEditor {
       if (isNaN(val)) val = 1;
       val = Math.max(0, Math.min(1, val));
       this.strengthValue.value = val.toFixed(2);
+      this.updateStrengthVisual();
       if (this.selectionType === "image" && this.timeline.segments[this.selectedIndex]) {
         const seg = this.timeline.segments[this.selectedIndex];
         if (seg.type !== "text") {
@@ -1963,6 +1970,18 @@ class TimelineEditor {
     }, 0);
   }
 
+  updateStrengthVisual() {
+    if (!this.strengthValue) return;
+    const raw = parseFloat(this.strengthValue.value);
+    const val = Number.isFinite(raw) ? Math.max(0, Math.min(1, raw)) : 0;
+    const pct = Math.round(val * 100);
+    const active = this.strengthValue.disabled ? "#555" : "#d7a94f";
+    const activeText = this.strengthValue.disabled ? "#ddd" : "#fff";
+    this.strengthValue.style.background =
+      `linear-gradient(90deg, ${active} 0%, ${active} ${pct}%, #222 ${pct}%, #222 100%)`;
+    this.strengthValue.style.color = activeText;
+  }
+
   updateUIFromSelection() {
     let seg = null;
     if (this.selectedIndex >= 0) {
@@ -2064,6 +2083,8 @@ class TimelineEditor {
         this.strengthValue.disabled = true;
       }
     }
+
+    this.updateStrengthVisual();
 
     if (this.segmentBoundsDisplay) {
       if (this.selectionType === "reference" && seg) {
