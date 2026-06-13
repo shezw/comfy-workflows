@@ -617,6 +617,7 @@ function parseInitial(jsonStr) {
     if (!seg.id) {
       seg.id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
     }
+    if (seg.type !== "text" && seg.guideStrength === undefined) seg.guideStrength = 1.0;
   }
 
   for (let seg of parsed.audioSegments) {
@@ -1435,9 +1436,9 @@ class TimelineEditor {
     this.strengthRow = document.createElement("div");
     this.strengthRow.className = "pr-strength-row";
 
-    const strengthLabel = document.createElement("span");
-    strengthLabel.className = "pr-strength-label";
-    strengthLabel.textContent = "Guide Strength:";
+    this.strengthLabel = document.createElement("span");
+    this.strengthLabel.className = "pr-strength-label";
+    this.strengthLabel.textContent = "Strength:";
 
     this.strengthValue = document.createElement("input");
     this.strengthValue.type = "text";
@@ -1516,7 +1517,7 @@ class TimelineEditor {
 
     this.strengthRow.appendChild(this.timeCodeDisplay);
     this.strengthRow.appendChild(this.segmentBoundsDisplay);
-    this.strengthRow.appendChild(strengthLabel);
+    this.strengthRow.appendChild(this.strengthLabel);
     this.strengthRow.appendChild(this.strengthValue);
 
 
@@ -1659,7 +1660,8 @@ class TimelineEditor {
               prompt: "",
               type: "image",
               imageFile: imageFile,
-              imageB64: imgUrl
+              imageB64: imgUrl,
+              guideStrength: 1.0,
             };
 
             const displayImg = new Image();
@@ -1998,6 +2000,7 @@ class TimelineEditor {
     }
 
     if (this.selectionType === "audio" && seg) {
+      if (this.strengthLabel) this.strengthLabel.textContent = "Strength:";
       this.promptInput.style.display = "none";
       this.strengthRow.style.display = "flex";
       this.audioInfoArea.style.display = "block";
@@ -2009,6 +2012,7 @@ class TimelineEditor {
       this.strengthValue.value = "1.00";
       this.strengthValue.disabled = true;
     } else if (this.selectionType === "reference" && seg) {
+      if (this.strengthLabel) this.strengthLabel.textContent = "Reference Strength:";
       this.audioInfoArea.style.display = "none";
       this.promptInput.style.display = "block";
       this.promptInput.placeholder = `Describe how ${seg.refName || "@Ref"} should be used...`;
@@ -2018,6 +2022,7 @@ class TimelineEditor {
       this.strengthValue.value = "1.00";
       this.strengthValue.disabled = true;
     } else if (this.selectionType === "camera" && seg) {
+      if (this.strengthLabel) this.strengthLabel.textContent = "Strength:";
       this.audioInfoArea.style.display = "none";
       this.promptInput.style.display = "block";
       this.promptInput.placeholder = "Describe camera motion for this time range...";
@@ -2027,6 +2032,7 @@ class TimelineEditor {
       this.strengthValue.value = "1.00";
       this.strengthValue.disabled = true;
     } else if (this.selectionType === "control" && seg) {
+      if (this.strengthLabel) this.strengthLabel.textContent = "IC-Control Strength:";
       this.audioInfoArea.style.display = "none";
       this.promptInput.style.display = "block";
       this.promptInput.placeholder = "Describe the intended IC-LoRA control signal...";
@@ -2036,6 +2042,7 @@ class TimelineEditor {
       this.strengthValue.value = (seg.strength ?? 0.75).toFixed(2);
       this.strengthValue.disabled = true;
     } else {
+      if (this.strengthLabel) this.strengthLabel.textContent = "Keyframe Strength:";
       this.audioInfoArea.style.display = "none";
       this.promptInput.style.display = "block";
       this.promptInput.placeholder = "Enter prompt for selected segment...";
@@ -2049,6 +2056,7 @@ class TimelineEditor {
         const strength = isImage ? (seg.guideStrength ?? 1.0) : 1.0;
         this.strengthValue.value = strength.toFixed(2);
         this.strengthValue.disabled = !isImage;
+        if (!isImage && this.strengthLabel) this.strengthLabel.textContent = "Strength:";
       } else {
         this.promptInput.value = "";
         this.promptInput.disabled = true;
@@ -2306,6 +2314,25 @@ class TimelineEditor {
           }
           this.ctx.restore();
         }
+      }
+
+      if (seg.type !== "text" && seg.type !== "ghost" && pxWidth > 42) {
+        const badgeText = `KF ${(seg.guideStrength ?? 1.0).toFixed(2)}`;
+        this.ctx.save();
+        this.ctx.font = "bold 10px sans-serif";
+        const badgeW = Math.min(pxWidth - 8, Math.max(46, this.ctx.measureText(badgeText).width + 12));
+        const badgeH = 18;
+        const badgeX = startX + 5;
+        const badgeY = RULER_HEIGHT + 6;
+        this.ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
+        this.ctx.beginPath();
+        this.ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 5);
+        this.ctx.fill();
+        this.ctx.fillStyle = "#ffe08a";
+        this.ctx.textAlign = "center";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText(badgeText, badgeX + badgeW / 2, badgeY + badgeH / 2);
+        this.ctx.restore();
       }
 
       if (isSelected) {

@@ -563,7 +563,7 @@ class LTXDirector(io.ComfyNode):
                     derived_h = tensor.shape[1]
                     derived_w = tensor.shape[2]
 
-                strength = strengths[idx] if idx < len(strengths) else 1.0
+                strength = strengths[idx] if idx < len(strengths) else float(seg.get("guideStrength", 1.0))
                 guide_data["images"].append(tensor)
                 guide_data["insert_frames"].append(int(seg["start"]))
                 guide_data["strengths"].append(float(strength))
