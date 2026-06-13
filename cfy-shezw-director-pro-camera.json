@@ -1,8 +1,8 @@
 {
   "id": "cfy-shezw-director-pro-ltxdirector",
   "revision": 0,
-  "last_node_id": 96,
-  "last_link_id": 250,
+  "last_node_id": 100,
+  "last_link_id": 257,
   "nodes": [
     {
       "id": 46,
@@ -22,7 +22,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 212
+          "link": 251
         },
         {
           "name": "clip",
@@ -104,8 +104,8 @@
         "cinematic 3D animated video, production quality, detailed material rendering, stable identity and consistent character appearance. same face and same identity as the first frame, preserve clothing, lighting, scene layout, material detail, fabric texture, sofa texture, hair and skin shading. main audio drives speech and lip sync, natural face animation, clear mouth motion, no identity drift. camera is stable unless a local segment explicitly asks for camera movement",
         120,
         5,
-        "{\"segments\":[{\"id\":\"shezw-action-001\",\"start\":0,\"length\":30,\"prompt\":\"neutral attentive expression, begins speaking, lips open and close with speech, slight head nod, shoulders remain stable, hands relaxed\",\"type\":\"text\"},{\"id\":\"shezw-action-002\",\"start\":30,\"length\":36,\"prompt\":\"warm smile while speaking, right hand rises slightly into a small open palm gesture, fingers natural, gesture follows speech emphasis, mouth remains visible\",\"type\":\"text\"},{\"id\":\"shezw-action-003\",\"start\":66,\"length\":30,\"prompt\":\"explaining motion, subtle pointing gesture, eyebrows lift, jaw and cheeks move with voice rhythm, stable torso, no large body movement\",\"type\":\"text\"},{\"id\":\"shezw-action-004\",\"start\":96,\"length\":24,\"prompt\":\"finishes sentence, hand lowers naturally, small final nod, calm confident expression, camera locked and stable\",\"type\":\"text\"}],\"audioSegments\":[],\"cameraSegments\":[{\"id\":\"shezw-camera-001\",\"start\":0,\"length\":30,\"prompt\":\"locked stable medium shot, eye-level camera, subject centered, no pan, no zoom, no camera shake\",\"type\":\"camera\"},{\"id\":\"shezw-camera-002\",\"start\":30,\"length\":36,\"prompt\":\"very slow controlled dolly-in from medium shot toward medium close-up, face remains centered, mouth visible, subtle background parallax\",\"type\":\"camera\"},{\"id\":\"shezw-camera-003\",\"start\":66,\"length\":30,\"prompt\":\"hold stable medium close-up, no lateral drift, no sudden reframing, hands stay visible without covering mouth\",\"type\":\"camera\"},{\"id\":\"shezw-camera-004\",\"start\":96,\"length\":24,\"prompt\":\"locked final close-up, stable composition, no shake, no zoom, no cut\",\"type\":\"camera\"}]}",
-        "neutral attentive expression, begins speaking, lips open and close with speech, slight head nod, shoulders remain stable, hands relaxed. Camera: locked stable medium shot, eye-level camera, subject centered, no pan, no zoom, no camera shake | warm smile while speaking, right hand rises slightly into a small open palm gesture, fingers natural, gesture follows speech emphasis, mouth remains visible. Camera: very slow controlled dolly-in from medium shot toward medium close-up, face remains centered, mouth visible, subtle background parallax | explaining motion, subtle pointing gesture, eyebrows lift, jaw and cheeks move with voice rhythm, stable torso, no large body movement. Camera: hold stable medium close-up, no lateral drift, no sudden reframing, hands stay visible without covering mouth | finishes sentence, hand lowers naturally, small final nod, calm confident expression, camera locked and stable. Camera: locked final close-up, stable composition, no shake, no zoom, no cut",
+        "{\"segments\":[{\"id\":\"shezw-action-001\",\"start\":0,\"length\":30,\"prompt\":\"neutral attentive expression, begins speaking, lips open and close with speech, slight head nod, shoulders remain stable, hands relaxed\",\"type\":\"text\"},{\"id\":\"shezw-action-002\",\"start\":30,\"length\":36,\"prompt\":\"warm smile while speaking, right hand rises slightly into a small open palm gesture, fingers natural, gesture follows speech emphasis, mouth remains visible\",\"type\":\"text\"},{\"id\":\"shezw-action-003\",\"start\":66,\"length\":30,\"prompt\":\"explaining motion, subtle pointing gesture, eyebrows lift, jaw and cheeks move with voice rhythm, stable torso, no large body movement\",\"type\":\"text\"},{\"id\":\"shezw-action-004\",\"start\":96,\"length\":24,\"prompt\":\"finishes sentence, hand lowers naturally, small final nod, calm confident expression, camera locked and stable\",\"type\":\"text\"}],\"audioSegments\":[],\"cameraSegments\":[{\"id\":\"shezw-camera-001\",\"start\":0,\"length\":30,\"prompt\":\"locked stable medium shot, eye-level camera, subject centered, no pan, no zoom, no camera shake\",\"type\":\"camera\"},{\"id\":\"shezw-camera-002\",\"start\":30,\"length\":36,\"prompt\":\"very slow controlled dolly-in from medium shot toward medium close-up, face remains centered, mouth visible, subtle background parallax\",\"type\":\"camera\"},{\"id\":\"shezw-camera-003\",\"start\":66,\"length\":30,\"prompt\":\"hold stable medium close-up, no lateral drift, no sudden reframing, hands stay visible without covering mouth\",\"type\":\"camera\"},{\"id\":\"shezw-camera-004\",\"start\":96,\"length\":24,\"prompt\":\"locked final close-up, stable composition, no shake, no zoom, no cut\",\"type\":\"camera\"}],\"controlSegments\":[{\"id\":\"shezw-ic-control-001\",\"start\":0,\"length\":120,\"prompt\":\"use the uploaded IC control video as real union-control guidance for camera and motion\",\"type\":\"control\",\"controlType\":\"union_control\",\"strength\":0.75}]}",
+        "neutral attentive expression, begins speaking, lips open and close with speech, slight head nod, shoulders remain stable, hands relaxed. Camera: locked stable medium shot, eye-level camera, subject centered, no pan, no zoom, no camera shake. IC-LoRA union_control strength 0.75: use the uploaded IC control video as real union-control guidance for camera and motion | warm smile while speaking, right hand rises slightly into a small open palm gesture, fingers natural, gesture follows speech emphasis, mouth remains visible. Camera: very slow controlled dolly-in from medium shot toward medium close-up, face remains centered, mouth visible, subtle background parallax. IC-LoRA union_control strength 0.75: use the uploaded IC control video as real union-control guidance for camera and motion | explaining motion, subtle pointing gesture, eyebrows lift, jaw and cheeks move with voice rhythm, stable torso, no large body movement. Camera: hold stable medium close-up, no lateral drift, no sudden reframing, hands stay visible without covering mouth. IC-LoRA union_control strength 0.75: use the uploaded IC control video as real union-control guidance for camera and motion | finishes sentence, hand lowers naturally, small final nod, calm confident expression, camera locked and stable. Camera: locked final close-up, stable composition, no shake, no zoom, no cut. IC-LoRA union_control strength 0.75: use the uploaded IC control video as real union-control guidance for camera and motion",
         "30,36,30,24",
         0.001,
         "",
@@ -354,6 +354,16 @@
             "name": "frame_rate"
           },
           "link": 226
+        },
+        {
+          "name": "ic_latent_downscale_factor",
+          "type": "FLOAT",
+          "link": 252
+        },
+        {
+          "name": "ic_control_image",
+          "type": "IMAGE",
+          "link": 256
         }
       ],
       "outputs": [
@@ -465,6 +475,16 @@
           "name": "audio_latent",
           "type": "LATENT",
           "link": 241
+        },
+        {
+          "name": "ic_latent_downscale_factor",
+          "type": "FLOAT",
+          "link": 253
+        },
+        {
+          "name": "ic_control_image",
+          "type": "IMAGE",
+          "link": 257
         }
       ],
       "outputs": [
@@ -511,10 +531,176 @@
       "title": "Shezw Director-Pro Notes",
       "properties": {},
       "widgets_values": [
-        "# Shezw Director-Pro: real LTX Director / Prompt Relay workflow\n\nThis workflow is based on WhatDreamsCost-ComfyUI LTX Director.\n\nThe important part is the LTXDirector node:\n- `global_prompt` holds persistent scene, identity, style, and material rules.\n- `timeline_data` stores visual timeline blocks.\n- `local_prompts` stores one action prompt per time segment.\n- `segment_lengths` stores pixel-frame duration per action segment.\n\nLTXDirector does not simply concatenate text. It tokenizes global + local prompts, maps token ranges, then patches LTX cross-attention with Prompt Relay temporal masks. That is the mechanism that makes action descriptions reach the model at the correct time.\n\nEdit action in timeline blocks or in local prompts. Keep each local prompt action-focused: expression, mouth movement, hand gesture, body pose, camera. Avoid stuffing scene/style into every action block."
+        "# Shezw Director-Pro: real LTX Director / Prompt Relay workflow\n\nThis workflow is based on WhatDreamsCost-ComfyUI LTX Director.\n\nThe important part is the LTXDirector node:\n- `global_prompt` holds persistent scene, identity, style, and material rules.\n- `timeline_data` stores visual timeline blocks.\n- `local_prompts` stores one action prompt per time segment.\n- `segment_lengths` stores pixel-frame duration per action segment.\n\nLTXDirector does not simply concatenate text. It tokenizes global + local prompts, maps token ranges, then patches LTX cross-attention with Prompt Relay temporal masks. That is the mechanism that makes action descriptions reach the model at the correct time.\n\nEdit action in timeline blocks or in local prompts. Keep each local prompt action-focused: expression, mouth movement, hand gesture, body pose, camera. Avoid stuffing scene/style into every action block.\n\nIC-Control is now wired to a real IC-LoRA path: load a control/depth/motion video in the outer IC CONTROL VIDEO / IMAGE INPUT node. The Director IC-Control track start and strength are read by ShezwDirectorICLoRAGuide inside both sampling stages. Required LoRA: ltxv/ltx2/ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors."
       ],
       "color": "#322",
       "bgcolor": "#533"
+    },
+    {
+      "id": 97,
+      "type": "LTXICLoRALoaderModelOnly",
+      "pos": [
+        760,
+        160
+      ],
+      "size": [
+        500,
+        130
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 212
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            251
+          ]
+        },
+        {
+          "name": "latent_downscale_factor",
+          "type": "FLOAT",
+          "links": [
+            252,
+            253
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXICLoRALoaderModelOnly"
+      },
+      "widgets_values": [
+        "ltxv/ltx2/ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors",
+        1
+      ],
+      "title": "IC-LoRA Loader - Union Control"
+    },
+    {
+      "id": 98,
+      "type": "LoadVideo",
+      "pos": [
+        760,
+        360
+      ],
+      "size": [
+        300,
+        235
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            254
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadVideo"
+      },
+      "widgets_values": [
+        "ic_control_video.mp4",
+        "image"
+      ],
+      "title": "IC CONTROL VIDEO / IMAGE INPUT"
+    },
+    {
+      "id": 99,
+      "type": "GetVideoComponents",
+      "pos": [
+        1100,
+        360
+      ],
+      "size": [
+        210,
+        90
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 254
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            255
+          ]
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GetVideoComponents"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 100,
+      "type": "ResizeImageMaskNode",
+      "pos": [
+        1350,
+        360
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input",
+          "type": "IMAGE,MASK",
+          "link": 255
+        }
+      ],
+      "outputs": [
+        {
+          "name": "resized",
+          "type": "IMAGE",
+          "links": [
+            256,
+            257
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ResizeImageMaskNode"
+      },
+      "widgets_values": [
+        "scale to multiple",
+        32,
+        "lanczos"
+      ],
+      "title": "Resize IC Control to LTX Multiple"
     }
   ],
   "links": [
@@ -522,7 +708,7 @@
       212,
       93,
       0,
-      46,
+      97,
       0,
       "MODEL"
     ],
@@ -709,6 +895,62 @@
       30,
       0,
       "VIDEO"
+    ],
+    [
+      251,
+      97,
+      0,
+      46,
+      0,
+      "MODEL"
+    ],
+    [
+      252,
+      97,
+      1,
+      94,
+      8,
+      "FLOAT"
+    ],
+    [
+      253,
+      97,
+      1,
+      95,
+      8,
+      "FLOAT"
+    ],
+    [
+      254,
+      98,
+      0,
+      99,
+      0,
+      "VIDEO"
+    ],
+    [
+      255,
+      99,
+      0,
+      100,
+      0,
+      "IMAGE"
+    ],
+    [
+      256,
+      100,
+      0,
+      94,
+      9,
+      "IMAGE"
+    ],
+    [
+      257,
+      100,
+      0,
+      95,
+      9,
+      "IMAGE"
     ]
   ],
   "groups": [],
@@ -1242,7 +1484,7 @@
         "state": {
           "lastGroupId": 6,
           "lastNodeId": 96,
-          "lastLinkId": 250,
+          "lastLinkId": 262,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -1371,6 +1613,34 @@
             "pos": [
               2960,
               4540
+            ]
+          },
+          {
+            "id": "shezw-stage1-ic-downscale",
+            "name": "ic_latent_downscale_factor",
+            "type": "FLOAT",
+            "linkIds": [
+              254
+            ],
+            "localized_name": "ic_latent_downscale_factor",
+            "label": "ic_downscale",
+            "pos": [
+              2960,
+              4560
+            ]
+          },
+          {
+            "id": "shezw-stage1-ic-image",
+            "name": "ic_control_image",
+            "type": "IMAGE",
+            "linkIds": [
+              253
+            ],
+            "localized_name": "ic_control_image",
+            "label": "ic_control_image",
+            "pos": [
+              2960,
+              4580
             ]
           }
         ],
@@ -1630,7 +1900,7 @@
                 "localized_name": "video_latent",
                 "name": "video_latent",
                 "type": "LATENT",
-                "link": 108
+                "link": 262
               },
               {
                 "localized_name": "audio_latent",
@@ -1710,8 +1980,7 @@
                 "name": "positive",
                 "type": "CONDITIONING",
                 "links": [
-                  10,
-                  54
+                  10
                 ]
               },
               {
@@ -1719,8 +1988,7 @@
                 "name": "negative",
                 "type": "CONDITIONING",
                 "links": [
-                  11,
-                  55
+                  11
                 ]
               },
               {
@@ -1770,13 +2038,13 @@
                 "localized_name": "positive",
                 "name": "positive",
                 "type": "CONDITIONING",
-                "link": 10
+                "link": 260
               },
               {
                 "localized_name": "negative",
                 "name": "negative",
                 "type": "CONDITIONING",
-                "link": 11
+                "link": 261
               }
             ],
             "outputs": [
@@ -2018,6 +2286,94 @@
             ],
             "color": "#222",
             "bgcolor": "#000"
+          },
+          {
+            "id": 60,
+            "type": "ShezwDirectorICLoRAGuide",
+            "pos": [
+              3520,
+              4210
+            ],
+            "size": [
+              340,
+              260
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 10
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 11
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 251
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "link": 108
+              },
+              {
+                "name": "guide_data",
+                "type": "GUIDE_DATA",
+                "link": 252
+              },
+              {
+                "name": "control_image",
+                "type": "IMAGE",
+                "link": 253
+              },
+              {
+                "name": "latent_downscale_factor",
+                "type": "FLOAT",
+                "link": 254
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  260,
+                  54
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  261,
+                  55
+                ]
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "links": [
+                  262
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ShezwDirectorICLoRAGuide"
+            },
+            "widgets_values": [
+              0.0,
+              "disabled",
+              false,
+              256,
+              64
+            ],
+            "title": "Apply Director IC-Control Track"
           }
         ],
         "groups": [],
@@ -2066,8 +2422,8 @@
             "id": 108,
             "origin_id": 8,
             "origin_slot": 2,
-            "target_id": 7,
-            "target_slot": 0,
+            "target_id": 60,
+            "target_slot": 3,
             "type": "LATENT"
           },
           {
@@ -2090,16 +2446,16 @@
             "id": 10,
             "origin_id": 8,
             "origin_slot": 0,
-            "target_id": 9,
-            "target_slot": 1,
+            "target_id": 60,
+            "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 11,
             "origin_id": 8,
             "origin_slot": 1,
-            "target_id": 9,
-            "target_slot": 2,
+            "target_id": 60,
+            "target_slot": 1,
             "type": "CONDITIONING"
           },
           {
@@ -2192,7 +2548,7 @@
           },
           {
             "id": 54,
-            "origin_id": 8,
+            "origin_id": 60,
             "origin_slot": 0,
             "target_id": -20,
             "target_slot": 0,
@@ -2200,7 +2556,7 @@
           },
           {
             "id": 55,
-            "origin_id": 8,
+            "origin_id": 60,
             "origin_slot": 1,
             "target_id": -20,
             "target_slot": 1,
@@ -2237,6 +2593,62 @@
             "target_id": 28,
             "target_slot": 0,
             "type": "INT"
+          },
+          {
+            "id": 251,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 60,
+            "target_slot": 2,
+            "type": "VAE"
+          },
+          {
+            "id": 252,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 60,
+            "target_slot": 4,
+            "type": "GUIDE_DATA"
+          },
+          {
+            "id": 253,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 60,
+            "target_slot": 5,
+            "type": "IMAGE"
+          },
+          {
+            "id": 254,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 60,
+            "target_slot": 6,
+            "type": "FLOAT"
+          },
+          {
+            "id": 260,
+            "origin_id": 60,
+            "origin_slot": 0,
+            "target_id": 9,
+            "target_slot": 1,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 261,
+            "origin_id": 60,
+            "origin_slot": 1,
+            "target_id": 9,
+            "target_slot": 2,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 262,
+            "origin_id": 60,
+            "origin_slot": 2,
+            "target_id": 7,
+            "target_slot": 0,
+            "type": "LATENT"
           }
         ],
         "extra": {
@@ -2249,7 +2661,7 @@
         "state": {
           "lastGroupId": 6,
           "lastNodeId": 96,
-          "lastLinkId": 250,
+          "lastLinkId": 262,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -2382,6 +2794,34 @@
             "pos": [
               2970,
               4140
+            ]
+          },
+          {
+            "id": "shezw-stage2-ic-downscale",
+            "name": "ic_latent_downscale_factor",
+            "type": "FLOAT",
+            "linkIds": [
+              254
+            ],
+            "localized_name": "ic_latent_downscale_factor",
+            "label": "ic_downscale",
+            "pos": [
+              2970,
+              4160
+            ]
+          },
+          {
+            "id": "shezw-stage2-ic-image",
+            "name": "ic_control_image",
+            "type": "IMAGE",
+            "linkIds": [
+              253
+            ],
+            "localized_name": "ic_control_image",
+            "label": "ic_control_image",
+            "pos": [
+              2970,
+              4180
             ]
           }
         ],
@@ -2594,13 +3034,13 @@
                 "localized_name": "positive",
                 "name": "positive",
                 "type": "CONDITIONING",
-                "link": 152
+                "link": 260
               },
               {
                 "localized_name": "negative",
                 "name": "negative",
                 "type": "CONDITIONING",
-                "link": 153
+                "link": 261
               }
             ],
             "outputs": [
@@ -2968,7 +3408,7 @@
                 "localized_name": "video_latent",
                 "name": "video_latent",
                 "type": "LATENT",
-                "link": 154
+                "link": 262
               },
               {
                 "localized_name": "audio_latent",
@@ -3067,6 +3507,92 @@
             "widgets_values": [],
             "color": "#222",
             "bgcolor": "#000"
+          },
+          {
+            "id": 60,
+            "type": "ShezwDirectorICLoRAGuide",
+            "pos": [
+              3540,
+              3730
+            ],
+            "size": [
+              340,
+              260
+            ],
+            "flags": {},
+            "order": 11,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 152
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 153
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 251
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "link": 154
+              },
+              {
+                "name": "guide_data",
+                "type": "GUIDE_DATA",
+                "link": 252
+              },
+              {
+                "name": "control_image",
+                "type": "IMAGE",
+                "link": 253
+              },
+              {
+                "name": "latent_downscale_factor",
+                "type": "FLOAT",
+                "link": 254
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  260
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  261
+                ]
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "links": [
+                  262
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ShezwDirectorICLoRAGuide"
+            },
+            "widgets_values": [
+              0.0,
+              "disabled",
+              false,
+              256,
+              64
+            ],
+            "title": "Apply Director IC-Control Track"
           }
         ],
         "groups": [],
@@ -3099,16 +3625,16 @@
             "id": 152,
             "origin_id": 58,
             "origin_slot": 0,
-            "target_id": 49,
-            "target_slot": 1,
+            "target_id": 60,
+            "target_slot": 0,
             "type": "CONDITIONING"
           },
           {
             "id": 153,
             "origin_id": 58,
             "origin_slot": 1,
-            "target_id": 49,
-            "target_slot": 2,
+            "target_id": 60,
+            "target_slot": 1,
             "type": "CONDITIONING"
           },
           {
@@ -3171,8 +3697,8 @@
             "id": 154,
             "origin_id": 58,
             "origin_slot": 2,
-            "target_id": 50,
-            "target_slot": 0,
+            "target_id": 60,
+            "target_slot": 3,
             "type": "LATENT"
           },
           {
@@ -3293,6 +3819,62 @@
             "origin_slot": 2,
             "target_id": -20,
             "target_slot": 1,
+            "type": "LATENT"
+          },
+          {
+            "id": 251,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 60,
+            "target_slot": 2,
+            "type": "VAE"
+          },
+          {
+            "id": 252,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 60,
+            "target_slot": 4,
+            "type": "GUIDE_DATA"
+          },
+          {
+            "id": 253,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 60,
+            "target_slot": 5,
+            "type": "IMAGE"
+          },
+          {
+            "id": 254,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 60,
+            "target_slot": 6,
+            "type": "FLOAT"
+          },
+          {
+            "id": 260,
+            "origin_id": 60,
+            "origin_slot": 0,
+            "target_id": 49,
+            "target_slot": 1,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 261,
+            "origin_id": 60,
+            "origin_slot": 1,
+            "target_id": 49,
+            "target_slot": 2,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 262,
+            "origin_id": 60,
+            "origin_slot": 2,
+            "target_id": 50,
+            "target_slot": 0,
             "type": "LATENT"
           }
         ],
